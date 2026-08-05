@@ -29,16 +29,22 @@
     jq
     yq-go
     ripgrep
+    fzf
+    zoxide
     
     # Entorno Python (rápido y moderno)
     uv
     ruff
     ty
+    httpie
     
     # Herramientas TUI para DevOps
     lazydocker
     lazygit
     k9s
+    ansible
+    opentofu
+    openbao
     
     # Tipografías para Oh My Posh
     nerd-fonts.meslo-lg
@@ -102,6 +108,18 @@
   # ===========================================================================
   # 6. PROGRAMAS MODULARIZADOS
   # ===========================================================================
+
+  programs.direnv = {
+    enable = true;
+
+    # Habilita la integración con tu shell principal
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+
+    # Esto es vital en el ecosistema Nix:
+    # Permite que direnv no solo cargue variables, sino también paquetes de Nix
+    nix-direnv.enable = true;
+  };
   
   programs.oh-my-posh = {
     enable = true;
@@ -125,8 +143,13 @@
     defaultEditor = true; # Configura variables como $EDITOR automáticamente
   };
 
+  programs.zoxide = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+  };
+
   programs.bat.enable = true;    # Alternativa a cat con resaltado de sintaxis
-  programs.direnv.enable = true; # Inyecta variables por directorio (se auto-integra con Zsh)
 
   programs.home-manager.enable = true;
 }
