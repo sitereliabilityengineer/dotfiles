@@ -1,5 +1,5 @@
 {
-  description = "Mi entorno de Home Manager con Flakes";
+  description = "Mi entorno de Home Manager multinodo";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -12,22 +12,27 @@
   outputs = { nixpkgs, home-manager, ... }: 
     let
       system = "x86_64-linux";
-      # Definimos el usuario UNA SOLA VEZ aquí
       usuario = "koteo"; 
       pkgs = import nixpkgs { 
-  	inherit system; 
-  	config.allowUnfree = true; 
+        inherit system; 
+        config.allowUnfree = true; 
       };
-    in {
-    homeConfigurations.${usuario} = home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
-      
-      # Inyectamos la variable "usuario" para que home.nix pueda leerla
       extraSpecialArgs = { inherit usuario; }; 
+    in {
+    homeConfigurations = {
       
-      modules = [ 
-        ./home.nix 
-      ];
+      # 1. Tu máquina de trabajo diaria en WSL
+      "${usuario}@wsl" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs extraSpecialArgs;
+        modules = [ ./hosts/wsl/home.nix ];
+      };
+
+      # 2. Cualquier otro Linux nativo o servidor
+      "${usuario}@generico" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs extraSpecialArgs;
+        modules = [ ./hosts/linux/home.nix ];
+      };
+      
     };
   };
 }
