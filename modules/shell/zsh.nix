@@ -41,6 +41,8 @@
       lz = "lazygit";
       ld = "lazydocker";
       chrome = "chrome --disable-gpu --use-gl=angle --use-angle=swiftshader --enable-unsafe-swiftshader --no-sandbox >/dev/null 2>&1 &";
+      # Se omite el antiguo alias de Chrome con --no-sandbox:
+      # si hay problemas de GPU en WSL, configurar un lanzador específico.
     };
 
     initContent = ''
@@ -49,8 +51,18 @@
       fi
 
       vaultenv() {
-        source "$HOME/.vault/$1"
-        echo "Vault activo en: $VAULT_ADDR"
+        if (( $# != 1 )) || [[ -z "$1" || "$1" == *'/'* || "$1" == .* ]]; then
+          print -u2 'Uso: vaultenv <perfil> (nombre simple dentro de ~/.vault)'
+          return 2
+        fi
+        local profile="$HOME/.vault/$1"
+        if [[ ! -f "$profile" || ! -r "$profile" ]]; then
+          print -u2 "Perfil no disponible: $profile"
+          return 1
+        fi
+        # Los perfiles son scripts de confianza controlados por el usuario.
+        source "$profile" || return
+        print "Vault activo en: ''${VAULT_ADDR:-sin VAULT_ADDR}"
       }
 
       for seq in '\e[H' '\eOH' '\e[1~' '\e[7~'; do
