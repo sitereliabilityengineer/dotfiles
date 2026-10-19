@@ -15,8 +15,8 @@ trap 'echo -e "\nScript detenido."; exit 0' INT TERM
 
 while true; do
     # Llama a powershell.exe desde WSL enviando la pulsación de F15
-    powershell.exe -NoProfile -NonInteractive -Command \
-      "\$wshell = New-Object -ComObject WScript.Shell; \$wshell.SendKeys('{F15}')"
+    /mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe -NoProfile -NonInteractive -Command \
+      '$wshell = New-Object -ComObject WScript.Shell; $wshell.SendKeys("{SCROLLLOCK}{SCROLLLOCK}")'
     
     echo "[$(date +'%H:%M:%S')] Pulsación simulada enviada a Windows."
     sleep "$INTERVAL"
