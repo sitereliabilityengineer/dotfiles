@@ -2,11 +2,56 @@
 
 {
   home.packages = with pkgs; [
-    htop jq yq-go ripgrep fzf zoxide
-    uv ruff ty httpie
-    docker docker-compose
-    lazydocker lazygit k9s ansible opentofu openbao
-    nerd-fonts.meslo-lg nerd-fonts.fira-code nerd-fonts.jetbrains-mono
+    # Sistema y utilidades
+    git
+    curl
+    wget
+    unzip
+    htop
+    btop
+    jq
+    yq-go
+    ripgrep
+    fzf
+    zoxide
+
+    # Desarrollo
+    uv
+    ruff
+    ty
+    httpie
+    shellcheck
+    yamllint
+
+    # Contenedores
+    docker
+    docker-compose
+    lazydocker
+
+    # Git
+    lazygit
+
+    # Kubernetes
+    kubectl
+    kubernetes-helm
+    kubectx
+    k9s
+    stern
+    kustomize
+
+    # IaC y automatización
+    ansible
+    opentofu
+    openbao
+
+    # Seguridad
+    sops
+    age
+
+    # Fuentes
+    nerd-fonts.meslo-lg
+    nerd-fonts.fira-code
+    nerd-fonts.jetbrains-mono
   ];
 
   programs.direnv = {
